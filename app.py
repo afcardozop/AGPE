@@ -5,8 +5,8 @@ from streamlit_folium import st_folium
 
 # CONFIGURACIÓN (ICONO Y NOMBRE)
 st.set_page_config(
-    page_title="APP AGPE EBSA",
-    page_icon="⚡",
+    page_title="AGPE EBSA",
+    page_icon="logo.png",
     layout="wide"
 )
 
