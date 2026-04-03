@@ -11,14 +11,20 @@ st.set_page_config(
 
 # GOOGLE SHEETS
 sheet_id = "17Z_Yyx3m8AEVqE2Cdo8uUxhgDzGcH-Jjyiift4sKnYo"
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+gid = "1980430520"
+csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
 
 # LEER DATOS
-df = pd.read_csv(csv_url)
+df = pd.read_csv(csv_url, dtype=str)
+df.columns = df.columns.str.strip()
 
-# LIMPIAR TIPOS
+# LIMPIAR TEXTO
 for col in df.columns:
-    df[col] = df[col].astype(str)
+    df[col] = df[col].astype(str).str.strip()
+
+# CONVERTIR COORDENADAS
+df["LATITUD"] = df["LATITUD"].str.replace(",", ".", regex=False)
+df["LONGITUD"] = df["LONGITUD"].str.replace(",", ".", regex=False)
 
 df["LATITUD"] = pd.to_numeric(df["LATITUD"], errors="coerce")
 df["LONGITUD"] = pd.to_numeric(df["LONGITUD"], errors="coerce")
