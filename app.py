@@ -9,36 +9,40 @@ st.set_page_config(
     layout="wide"
 )
 
-# Leer archivo
-df = pd.read_csv("AGPE_LIMPIO.csv")
+# GOOGLE SHEETS
+sheet_id = "17Z_Yyx3m8AEVqE2Cdo8uUxhgDzGcH-Jjyiift4sKnYo"
+csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
 
-# Limpiar tipos
+# LEER DATOS
+df = pd.read_csv(csv_url)
+
+# LIMPIAR TIPOS
 for col in df.columns:
     df[col] = df[col].astype(str)
 
 df["LATITUD"] = pd.to_numeric(df["LATITUD"], errors="coerce")
 df["LONGITUD"] = pd.to_numeric(df["LONGITUD"], errors="coerce")
 
-# Quitar filas sin coordenadas
+# QUITAR FILAS SIN COORDENADAS
 df = df.dropna(subset=["LATITUD", "LONGITUD"]).copy()
 
-# Encabezado con logo
+# ENCABEZADO
 col1, col2 = st.columns([1, 5])
 
 with col1:
-    st.image("logo.png", width=110)
+    st.image("logo.png", width=100)
 
 with col2:
     st.title("APP AGPE EBSA")
     st.write("Consulta de usuarios AGPE con mapa interactivo")
 
-# Buscador
+# BUSCADOR
 busqueda = st.text_input("Buscar usuario:")
 
 if busqueda:
     df = df[df["DESCRIPCION"].str.contains(busqueda, case=False, na=False)]
 
-# Filtro por municipio
+# FILTRO
 municipios = sorted(df["MUNICIPIO"].dropna().unique())
 municipio_sel = st.selectbox("Filtrar por municipio:", ["Todos"] + municipios)
 
@@ -51,13 +55,12 @@ if len(df) == 0:
     st.warning("No hay resultados para ese filtro.")
     st.stop()
 
-# Centro del mapa
+# MAPA
 lat_centro = df["LATITUD"].mean()
 lon_centro = df["LONGITUD"].mean()
 
 m = folium.Map(location=[lat_centro, lon_centro], zoom_start=8)
 
-# Marcadores con atributos
 for _, fila in df.iterrows():
     popup_html = f"""
     <div style="width:300px; font-size:14px;">
@@ -94,7 +97,7 @@ for _, fila in df.iterrows():
     ).add_to(m)
 
 st.subheader("Mapa")
-st_folium(m, width="100%", height=600)
+st_folium(m, width=1200, height=600)
 
 st.subheader("Listado")
 for _, fila in df.iterrows():
