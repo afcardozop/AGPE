@@ -1,18 +1,24 @@
+import streamlit as st
+import pandas as pd
+
+# Leer archivo CSV
+df = pd.read_csv("AGPE_LIMPIO.csv")
+
 # Título
-st.title("APP AGPE EBSA ⚡")
+st.title("APP AGPE EBSA")
 
 st.write("Listado de usuarios:")
 
 # Filtro por municipio
-municipios = df["MUNICIPIO"].dropna().unique()
-municipio_sel = st.selectbox("Filtrar por municipio:", ["Todos"] + list(municipios))
+municipios = sorted(df["MUNICIPIO"].dropna().astype(str).unique())
+municipio_sel = st.selectbox("Filtrar por municipio:", ["Todos"] + municipios)
 
 if municipio_sel != "Todos":
-    df = df[df["MUNICIPIO"] == municipio_sel]
+    df = df[df["MUNICIPIO"].astype(str) == municipio_sel]
 
 # Mostrar datos
 for i in range(len(df)):
-    col1, col2 = st.columns([3,1])
+    col1, col2 = st.columns([3, 1])
 
     with col1:
         st.write(f"{df.iloc[i]['DESCRIPCION']} - {df.iloc[i]['MUNICIPIO']}")
