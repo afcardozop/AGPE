@@ -9,11 +9,11 @@ st.set_page_config(page_title="APP AGPE EBSA", layout="wide")
 df = pd.read_csv("AGPE_LIMPIO.csv")
 
 # Limpiar tipos
-df["DESCRIPCION"] = df["DESCRIPCION"].astype(str)
-df["MUNICIPIO"] = df["MUNICIPIO"].astype(str)
+for col in df.columns:
+    df[col] = df[col].astype(str)
+
 df["LATITUD"] = pd.to_numeric(df["LATITUD"], errors="coerce")
 df["LONGITUD"] = pd.to_numeric(df["LONGITUD"], errors="coerce")
-df["URL_GOOGLE_MAPS"] = df["URL_GOOGLE_MAPS"].astype(str)
 
 # Quitar filas sin coordenadas
 df = df.dropna(subset=["LATITUD", "LONGITUD"]).copy()
@@ -46,17 +46,29 @@ lon_centro = df["LONGITUD"].mean()
 
 m = folium.Map(location=[lat_centro, lon_centro], zoom_start=8)
 
-# Marcadores con atributos + botón Ir
 for _, fila in df.iterrows():
     popup_html = f"""
-    <div style="width:260px;">
-        <b>{fila['DESCRIPCION']}</b><br>
-        <b>Municipio:</b> {fila['MUNICIPIO']}<br>
-        <b>Latitud:</b> {fila['LATITUD']}<br>
-        <b>Longitud:</b> {fila['LONGITUD']}<br><br>
-        <a href="{fila['URL_GOOGLE_MAPS']}" target="_blank"
-           style="display:inline-block;padding:8px 12px;background:#1f77b4;color:white;
-                  text-decoration:none;border-radius:6px;">
+    <div style="width:300px; font-size:14px;">
+        <h4 style="margin-bottom:10px;">{fila.get('DESCRIPCION', '')}</h4>
+
+        <b>Código AGPE:</b> {fila.get('CODIGO_AGPE', '')}<br>
+        <b>Serial:</b> {fila.get('SERIAL', '')}<br>
+        <b>Cuenta:</b> {fila.get('CUENTA', '')}<br>
+        <b>Marca:</b> {fila.get('MARCA', '')}<br>
+        <b>Municipio:</b> {fila.get('MUNICIPIO', '')}<br>
+        <b>Latitud:</b> {fila.get('LATITUD', '')}<br>
+        <b>Longitud:</b> {fila.get('LONGITUD', '')}<br>
+        <b>Teléfono:</b> {fila.get('TELEFONO', '')}<br>
+        <b>Email:</b> {fila.get('E_MAIL', fila.get('EMAIL', fila.get('E-MAIL', '')))}<br><br>
+
+        <a href="{fila.get('URL_GOOGLE_MAPS', '')}" target="_blank"
+           style="display:inline-block;
+                  padding:8px 14px;
+                  background:#0d6efd;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:8px;
+                  font-weight:bold;">
            Ir
         </a>
     </div>
@@ -64,17 +76,18 @@ for _, fila in df.iterrows():
 
     folium.Marker(
         location=[fila["LATITUD"], fila["LONGITUD"]],
-        popup=folium.Popup(popup_html, max_width=300),
-        tooltip=fila["DESCRIPCION"]
+        popup=folium.Popup(popup_html, max_width=350),
+        tooltip=fila.get("DESCRIPCION", ""),
+        icon=folium.Icon(color="green", icon="flash", prefix="glyphicon")
     ).add_to(m)
 
 st.subheader("Mapa")
-st_folium(m, width="100%", height=550)
+st_folium(m, width="100%", height=600)
 
 st.subheader("Listado")
 for _, fila in df.iterrows():
     col1, col2 = st.columns([4, 1])
     with col1:
-        st.write(f"{fila['DESCRIPCION']} - {fila['MUNICIPIO']}")
+        st.write(f"{fila.get('DESCRIPCION', '')} - {fila.get('MUNICIPIO', '')}")
     with col2:
-        st.link_button("Ir", fila["URL_GOOGLE_MAPS"])
+        st.link_button("Ir", fila.get("URL_GOOGLE_MAPS", ""))
