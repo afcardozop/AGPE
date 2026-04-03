@@ -9,6 +9,12 @@ st.title("APP AGPE EBSA")
 
 st.write("Listado de usuarios:")
 
+# Buscador
+busqueda = st.text_input("Buscar usuario:")
+
+if busqueda:
+    df = df[df["DESCRIPCION"].astype(str).str.contains(busqueda, case=False, na=False)]
+
 # Filtro por municipio
 municipios = sorted(df["MUNICIPIO"].dropna().astype(str).unique())
 municipio_sel = st.selectbox("Filtrar por municipio:", ["Todos"] + municipios)
