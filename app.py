@@ -108,14 +108,15 @@ st.subheader("Mapa")
 st_folium(m, width=1200, height=600)
 
 st.subheader("Listado")
+
 for _, fila in df.iterrows():
     col1, col2 = st.columns([4, 1])
 
     with col1:
         st.write(f"{fila.get('DESCRIPCION', '')} - {fila.get('MUNICIPIO', '')}")
 
-   with col2:
-    st.link_button(
-        "🧭 Abrir Google Maps",
-        fila["URL_GOOGLE_MAPS"]
-    )
+    with col2:
+        st.link_button(
+            "Abrir Google Maps",
+            fila["URL_GOOGLE_MAPS"]
+        )
