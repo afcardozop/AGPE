@@ -17,6 +17,7 @@ csv_url = "https://raw.githubusercontent.com/afcardozop/AGPE/main/AGPE_LIMPIO.cs
 # LEER DATOS
 df = pd.read_csv(csv_url, dtype=str)
 df.columns = df.columns.str.strip()
+st.write(df.columns.tolist())
 
 # LIMPIAR TEXTO
 for col in df.columns:
