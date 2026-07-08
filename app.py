@@ -17,8 +17,6 @@ csv_url = "https://raw.githubusercontent.com/afcardozop/AGPE/main/AGPE_LIMPIO.cs
 # LEER DATOS
 df = pd.read_csv(csv_url, dtype=str)
 df.columns = df.columns.str.strip()
-st.write(df.columns.tolist())
-st.write(df["URL_GOOGLE_MAPS"].head())
 
 # LIMPIAR TEXTO
 for col in df.columns:
@@ -84,7 +82,7 @@ for _, fila in df.iterrows():
         <b>Teléfono:</b> {fila.get('TELEFONO', '')}<br>
         <b>Email:</b> {fila.get('E_MAIL', fila.get('EMAIL', fila.get('E-MAIL', '')))}<br><br>
 
-        <a href="{fila.get('URL_GOOGLE_MAPS', '')}" target="_blank"
+        <a href="{fila.get('URL_GOOGLE_MAPS', '')}" 
            style="display:inline-block;
                   padding:8px 14px;
                   background:#0d6efd;
