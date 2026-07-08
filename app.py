@@ -12,7 +12,7 @@ st.set_page_config(
 # GOOGLE SHEETS
 sheet_id = "17Z_Yyx3m8AEVqE2Cdo8uUxhgDzGcH-Jjyiift4sKnYo"
 gid = "1980430520"
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+csv_url = "https://raw.githubusercontent.com/afcardozop/AGPE/main/AGPE_LIMPIO.csv"
 
 # LEER DATOS
 df = pd.read_csv(csv_url, dtype=str)
