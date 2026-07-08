@@ -114,8 +114,8 @@ for _, fila in df.iterrows():
     with col1:
         st.write(f"{fila.get('DESCRIPCION', '')} - {fila.get('MUNICIPIO', '')}")
 
-    with col2:
+   with col2:
     st.link_button(
-        "Abrir Google Maps",
+        "🧭 Abrir Google Maps",
         fila["URL_GOOGLE_MAPS"]
     )
