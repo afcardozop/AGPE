@@ -18,6 +18,7 @@ csv_url = "https://raw.githubusercontent.com/afcardozop/AGPE/main/AGPE_LIMPIO.cs
 df = pd.read_csv(csv_url, dtype=str)
 df.columns = df.columns.str.strip()
 st.write(df.columns.tolist())
+st.write(df["URL_GOOGLE_MAPS"].head())
 
 # LIMPIAR TEXTO
 for col in df.columns:
