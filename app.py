@@ -82,7 +82,7 @@ for _, fila in df.iterrows():
         <b>Teléfono:</b> {fila.get('TELEFONO', '')}<br>
         <b>Email:</b> {fila.get('E_MAIL', fila.get('EMAIL', fila.get('E-MAIL', '')))}<br><br>
 
-        <a href="{fila.get('URL_GOOGLE_MAPS', '')}" target="_blank"
+        <a href="https://www.google.com/maps?q={fila['LATITUD']},{fila['LONGITUD']}" target="_blank"
            style="display:inline-block;
                   padding:8px 14px;
                   background:#0d6efd;
